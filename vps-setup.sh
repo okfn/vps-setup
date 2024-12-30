@@ -40,7 +40,7 @@ setup_logwatch() {
 
 install_utils() {
   echo "########## Installing util tools like htop..."
-  apt install -q htop
+  apt install -q htop vim
 }
 
 main () {

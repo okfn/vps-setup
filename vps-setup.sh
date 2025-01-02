@@ -8,7 +8,7 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 RESET='\033[0m'
 
-if [ $1 != "--confirm" ]; then
+if [ -z "$1" ] || [ "$1" != "--confirm" ]; then
     echo "ATTENTION!!"
     echo "This command will disable password authentication and root login."
     echo "This means that once you logout from the current session you will no longer be able to login again as root."

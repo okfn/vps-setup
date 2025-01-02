@@ -42,7 +42,8 @@ setup_firewall() {
 disable_password_and_root_login() {
   echo -e "${GREEN}Disabbling password authentication and root login from SSH...${RESET}"
   sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
-  sed -i 's/#PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
+  # prohibit-password is Debian's default
+  sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config
   systemctl restart ssh
 }
 

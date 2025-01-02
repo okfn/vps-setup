@@ -46,10 +46,6 @@ disable_password_and_root_login() {
   systemctl restart ssh
 }
 
-disable_root_login() {
-  echo -e "${GREEN}Disabbling root login...${RESET}"
-}
-
 setup_fail2ban() {
   echo -e "${GREEN}Installing and enabling fail2ban (using default configs)...${RESET}"
   apt install -q fail2ban

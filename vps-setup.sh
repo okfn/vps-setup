@@ -22,7 +22,7 @@ setup_firewall() {
 
 disable_password_login() {
   echo "########## Disabbling password authentication from SSH."
-  sed -i 's/#   PasswordAuthentication yes/   PasswordAuthentication no/' /etc/ssh/ssh_config
+  sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
   systemctl restart ssh
 }
 

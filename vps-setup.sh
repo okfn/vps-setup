@@ -8,6 +8,16 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 RESET='\033[0m'
 
+if [ $1 != "--confirm" ]; then
+    echo "ATTENTION!!"
+    echo "This command will disable password authentication and root login."
+    echo "This means that once you logout from the current session you will no longer be able to login again as root."
+    echo "After running make sure you can login with the newly created sysadmin user BEFORE closing this session."
+    echo ""
+    echo "If you understand this, execute the command with --confirm argument."
+    exit 1
+fi
+
 if [ ! -f id_rsa ]; then
     echo -e "${RED}This script will create a sysadmin account. A file named id_rsa with the public key for this user needs to exist in this directory.${RESET}"
     echo -e "${RED}Exiting...${RESET}"
@@ -62,7 +72,7 @@ add_sysadmin_user() {
   adduser sysadmin
   usermod -aG sudo sysadmin
   mkdir /home/sysadmin/.ssh
-  echo -e "${GREEN}Adding the id_rsa key to authorized_keys file...${RESET}"
+  echo -e "${GREEN}Adding the id_rsa key to authorized_keys file of sysadmin user...${RESET}"
   cat id_rsa >> /home/sysadmin/.ssh/authorized_keys
 }
 

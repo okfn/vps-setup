@@ -4,14 +4,23 @@
 #  - https://community.hetzner.com/tutorials/setup-ubuntu-20-04
 #
 # Develop and tested in Debian 12 but should work on Ubuntu as well.
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+RESET='\033[0m'
+
+if [ ! -f id_rsa ]; then
+    echo -e "${RED}This script will create a sysadmin account. A file named id_rsa with the public key for this user needs to exist in this directory.${RESET}"
+    echo -e "${RED}Exiting...${RESET}"
+    exit 1
+fi
 
 update_apt() {
-    echo "######## Updating apt-get repository.."
+    echo -e "${GREEN} Updating apt-get repository...${RESET}"
     apt update -q
 }
 
 setup_firewall() {
-  echo "########## Installing firewall and opening only ports 22, 80 and 443."
+  echo -e "${GREEN}Installing firewall and opening only ports 22, 80 and 443... ${RESET}"
   apt install -q ufw
   ufw default deny incoming
   ufw allow 22/tcp
@@ -20,36 +29,51 @@ setup_firewall() {
   ufw enable
 }
 
-disable_password_login() {
-  echo "########## Disabbling password authentication from SSH."
+disable_password_and_root_login() {
+  echo -e "${GREEN}Disabbling password authentication and root login from SSH...${RESET}"
   sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+  sed -i 's/#PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
   systemctl restart ssh
 }
 
+disable_root_login() {
+  echo -e "${GREEN}Disabbling root login...${RESET}"
+}
+
 setup_fail2ban() {
-  echo "########## Installing and enabling fail2ban (using default configs)..."
+  echo -e "${GREEN}Installing and enabling fail2ban (using default configs)...${RESET}"
   apt install -q fail2ban
   systemctl enable fail2ban
   systemctl start fail2ban
 }
 
 setup_logwatch() {
-  echo "########## Installing and enabling logwatch (using default configs)"
+  echo -e "${GREEN}Installing and enabling logwatch (using default configs)...${RESET}"
   apt install -q logwatch
 }
 
 install_utils() {
-  echo "########## Installing util tools like htop..."
+  echo -e "${GREEN}Installing util tools like htop and vim...${RESET}"
   apt install -q htop vim
+}
+
+add_sysadmin_user() {
+  echo -e "${GREEN}Adding a sysadmin user with sudo permission...${RESET}"
+  adduser sysadmin
+  usermod -aG sudo sysadmin
+  mkdir /home/sysadmin/.ssh
+  echo -e "${GREEN}Adding the id_rsa key to authorized_keys file...${RESET}"
+  cat id_rsa >> /home/sysadmin/.ssh/authorized_keys
 }
 
 main () {
     update_apt
     setup_firewall
-    disable_password_login
+    disable_password_and_root_login
     setup_fail2ban
     setup_logwatch
     install_utils
+    add_sysadmin_user
 }
 
 main

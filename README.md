@@ -10,7 +10,7 @@ This script is develop and tested in Debian 12, but probably will work on any Ub
 ## sysadmin user
 
 In addition to installing and configuring some tools, this script will create a `sysadmin` user for subsequent logins and automated tasks.
-Therefore, in order to execute you will need to copy an `id_rsa` public key file in the same directory where this script will be run. The execution
+Therefore, in order to execute you will need to copy an `id_rsa.pub` public key file in the same directory where this script will be run. The execution
 will then take care to append that public key to the `/home/sysadmin/.ssh/authorized_keys` file so you can login using ssh with the newly
 created sysadmin user (assuming you have the private key in your machine).
 

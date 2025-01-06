@@ -15,7 +15,29 @@ will then take care to append that public key to the `/home/sysadmin/.ssh/author
 created sysadmin user (assuming you have the private key in your machine).
 
 ## How to execute
+Copy to the host both the script and the public key for the sysadmin account that will be created then execute the script.
 
 ```bash
+scp vps-setup.sh root@1.2.3.4:/root/
+# If you want a different public key for the sysadmin user replace it
+scp ~/.ssh/id_rsa.pub root@1.2.3.4:/root/
+
+# SSH into the VPS
+ssh root@1.2.3.4
+
+# Run the script (from the VPS)
 ./vps-setup.sh
+```
+
+Before closing the root session, check that you are able to login with the new sysadmin account:
+
+```bash
+ssh sysadmin@1.2.3.4
+```
+
+If you are able to login with the sysadmin account, close the root session. You can validate that root login is disabled by executing:
+
+```bash
+ssh root@1.2.3.4
+root@1.2.3.4: Permission denied (publickey).
 ```

@@ -30,20 +30,21 @@ update_apt() {
 }
 
 setup_firewall() {
-  echo -e "${GREEN}Installing firewall and opening only ports 22, 80 and 443... ${RESET}"
+  echo -e "${GREEN}Installing firewall and opening only ports 1222 (ssh), 80 and 443... ${RESET}"
   apt-get install ufw -qq
   ufw default deny incoming
-  ufw allow 22/tcp
+  ufw allow 1222/tcp
   ufw allow 80/tcp
   ufw allow 443/tcp
   ufw enable
 }
 
-disable_password_and_root_login() {
-  echo -e "${GREEN}Disabbling password authentication and root login from SSH...${RESET}"
+setup_ssh_daemon() {
+  echo -e "${GREEN}Disabbling password authentication, root login and changing SSH port to 1222...${RESET}"
   sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
   # prohibit-password is Debian's default
   sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config
+  sed -i 's/#Port 22/Port 1222/' /etc/ssh/sshd_config
   systemctl restart ssh
 }
 
@@ -76,7 +77,7 @@ add_sysadmin_user() {
 main () {
     update_apt
     setup_firewall
-    disable_password_and_root_login
+    setup_ssh_daemon
     setup_fail2ban
     setup_logwatch
     install_utils

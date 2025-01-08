@@ -14,6 +14,22 @@ Therefore, in order to execute you will need to copy an `id_rsa.pub` public key 
 will then take care to append that public key to the `/home/sysadmin/.ssh/authorized_keys` file so you can login using ssh with the newly
 created sysadmin user (assuming you have the private key in your machine).
 
+## ssh port
+
+This script will change the default ssh port from 22 to 1222 so in order to log in again you will need to either parametrize the `ssh` command or add a
+custom configuration to your `~/.ssh/config` file.
+```bash
+ssh -p 1222 sysadmin@1.2.3.4
+```
+
+```
+# ~/.ssh/config
+Host 1.2.3.4
+  User sysadmin
+  IdentityFile ~/.ssh/id_rsa # Or whatever your ssh key is.
+  Port 1222
+```
+
 ## How to execute
 Copy to the host both the script and the public key for the sysadmin account that will be created then execute the script.
 
@@ -32,7 +48,7 @@ ssh root@1.2.3.4
 Before closing the root session, check that you are able to login with the new sysadmin account:
 
 ```bash
-ssh sysadmin@1.2.3.4
+ssh -p 1222 sysadmin@1.2.3.4
 ```
 
 If you are able to login with the sysadmin account, close the root session. You can validate that root login is disabled by executing:

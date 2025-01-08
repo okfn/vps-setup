@@ -26,12 +26,12 @@ fi
 
 update_apt() {
     echo -e "${GREEN} Updating apt-get repository...${RESET}"
-    apt update -q
+    apt-get update -qq
 }
 
 setup_firewall() {
   echo -e "${GREEN}Installing firewall and opening only ports 22, 80 and 443... ${RESET}"
-  apt install -q ufw
+  apt-get install ufw -qq
   ufw default deny incoming
   ufw allow 22/tcp
   ufw allow 80/tcp
@@ -49,19 +49,19 @@ disable_password_and_root_login() {
 
 setup_fail2ban() {
   echo -e "${GREEN}Installing and enabling fail2ban (using default configs)...${RESET}"
-  apt install -q fail2ban
+  apt-get install fail2ban -qq
   systemctl enable fail2ban
   systemctl start fail2ban
 }
 
 setup_logwatch() {
   echo -e "${GREEN}Installing and enabling logwatch (using default configs)...${RESET}"
-  apt install -q logwatch
+  apt-get install logwatch -qq
 }
 
 install_utils() {
   echo -e "${GREEN}Installing util tools like htop and vim...${RESET}"
-  apt install -q htop vim
+  apt-get install htop vim -qq
 }
 
 add_sysadmin_user() {

@@ -5,12 +5,12 @@ A script to execute common setup tasks on newly created VPS (Virtual Private Ser
 
 This script is based on Hetzner Community guides on [How to Keep a VPS Server Safe](https://community.hetzner.com/tutorials/security-ubuntu-settings-firewall-tools)
 
-This script is develop and tested in Debian 12, but probably will work on any Ubuntu as well.
+This script is developed for Debian 12.
 
 ## sysadmin user
 
 In addition to installing and configuring some tools, this script will create a `sysadmin` user for subsequent logins and automated tasks.
-Therefore, in order to execute you will need to copy an `id_rsa.pub` public key file in the same directory where this script will be run. The execution
+Therefore, in order to execute you will need to copy an `id_ed25519.pub` public key file in the same directory where this script will be run. The execution
 will then take care to append that public key to the `/home/sysadmin/.ssh/authorized_keys` file so you can login using ssh with the newly
 created sysadmin user (assuming you have the private key in your machine).
 
@@ -26,7 +26,7 @@ ssh -p 1222 sysadmin@1.2.3.4
 # ~/.ssh/config
 Host 1.2.3.4
   User sysadmin
-  IdentityFile ~/.ssh/id_rsa # Or whatever your ssh key is.
+  IdentityFile ~/.ssh/id_ed25519 # Or whatever your ssh key is.
   Port 1222
 ```
 
@@ -36,7 +36,7 @@ Copy to the host both the script and the public key for the sysadmin account tha
 ```bash
 scp vps-setup.sh root@1.2.3.4:/root/
 # If you want a different public key for the sysadmin user replace it
-scp ~/.ssh/id_rsa.pub root@1.2.3.4:/root/
+scp ~/.ssh/id_ed25519.pub root@1.2.3.4:/root/
 
 # SSH into the VPS
 ssh root@1.2.3.4

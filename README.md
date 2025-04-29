@@ -5,7 +5,7 @@ A script to execute common setup tasks on newly created VPS (Virtual Private Ser
 
 This script is based on Hetzner Community guides on [How to Keep a VPS Server Safe](https://community.hetzner.com/tutorials/security-ubuntu-settings-firewall-tools)
 
-This script is develop for Debian 12.
+This script is developed for Debian 12.
 
 ## sysadmin user
 

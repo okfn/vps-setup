@@ -3,7 +3,7 @@
 # This script follows the guidelines recommended by Hetzner:
 #  - https://community.hetzner.com/tutorials/setup-ubuntu-20-04
 #
-# Develop and tested in Debian 12 but should work on Ubuntu as well.
+# Develop for Debian 12.
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 RESET='\033[0m'

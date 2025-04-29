@@ -18,8 +18,8 @@ if [ -z "$1" ] || [ "$1" != "--confirm" ]; then
     exit 1
 fi
 
-if [ ! -f id_rsa.pub ]; then
-    echo -e "${RED}This script will create a sysadmin account. A file named id_rsa.pub with the public key for this user needs to exist in this directory.${RESET}"
+if [ ! -f id_ed25519.pub ]; then
+    echo -e "${RED}This script will create a sysadmin account. A file named id_ed25519.pub with the public key for this user needs to exist in this directory.${RESET}"
     echo -e "${RED}Exiting...${RESET}"
     exit 1
 fi
@@ -70,8 +70,12 @@ add_sysadmin_user() {
   adduser sysadmin
   usermod -aG sudo sysadmin
   mkdir /home/sysadmin/.ssh
-  echo -e "${GREEN}Adding the id_rsa.pub key to authorized_keys file of sysadmin user...${RESET}"
-  cat id_rsa.pub >> /home/sysadmin/.ssh/authorized_keys
+  echo -e "${GREEN}Adding the id_ed25519.pub key to authorized_keys file of sysadmin user...${RESET}"
+  cat id_ed25519.pub >> /home/sysadmin/.ssh/authorized_keys
+}
+
+finish_message() {
+  echo -e "${GREEN}Configuration Finished!! Before closing this session check that you can ssh in using port 1222 with the newly created sysadmin account.${RESET}"
 }
 
 main () {
@@ -82,6 +86,7 @@ main () {
     setup_logwatch
     install_utils
     add_sysadmin_user
+    finish_message
 }
 
 main

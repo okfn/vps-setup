@@ -25,8 +25,9 @@ if [ ! -f id_ed25519.pub ]; then
 fi
 
 update_apt() {
-    echo -e "${GREEN} Updating apt-get repository...${RESET}"
+    echo -e "${GREEN} Updating apt-get repository and upgrading the system...${RESET}"
     apt-get update -qq
+    apt-get upgrade -qq
 }
 
 setup_firewall() {
@@ -61,8 +62,8 @@ setup_logwatch() {
 }
 
 install_utils() {
-  echo -e "${GREEN}Installing util tools like htop and vim...${RESET}"
-  apt-get install htop vim -qq
+  echo -e "${GREEN}Installing util tools: htop, vim and git...${RESET}"
+  apt-get install htop vim git -qq
 }
 
 add_sysadmin_user() {
@@ -78,6 +79,26 @@ finish_message() {
   echo -e "${GREEN}Configuration Finished!! Before closing this session check that you can ssh in using port 1222 with the newly created sysadmin account.${RESET}"
 }
 
+install_docker() {
+  echo -e "${GREEN}Installing latest version of docker...${RESET}"
+  # Commands extracted from official documentation:
+  # https://docs.docker.com/engine/install/debian/#install-using-the-repository
+  apt-get update -qq
+  apt-get install ca-certificates curl -qq
+  install -m 0755 -d /etc/apt/keyrings
+  curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+  chmod a+r /etc/apt/keyrings/docker.asc
+  echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+    tee /etc/apt/sources.list.d/docker.list > /dev/null
+  apt-get update -qq
+  apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -qq
+
+  echo -e "${GREEN}Adding sysadmin user to docker group...${RESET}"
+  usermod -aG docker sysadmin
+}
+
 main () {
     update_apt
     setup_firewall
@@ -86,6 +107,7 @@ main () {
     setup_logwatch
     install_utils
     add_sysadmin_user
+    install_docker
     finish_message
 }
 

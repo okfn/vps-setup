@@ -52,6 +52,9 @@ setup_ssh_daemon() {
 setup_fail2ban() {
   echo -e "${GREEN}Installing and enabling fail2ban (using default configs)...${RESET}"
   apt-get install fail2ban -qq
+  # For Debian 12 install: https://github.com/fail2ban/fail2ban/issues/3292#issuecomment-1678844644
+  apt-get install python3-systemd
+  echo -e "[sshd]\nbackend=systemd\nenabled=true" | sudo tee /etc/fail2ban/jail.local
   systemctl enable fail2ban
   systemctl start fail2ban
 }

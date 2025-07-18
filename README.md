@@ -3,9 +3,9 @@ A script to execute common setup tasks on newly created VPS (Virtual Private Ser
 
 ## Description
 
-This script is based on Hetzner Community guides on [How to Keep a VPS Server Safe](https://community.hetzner.com/tutorials/security-ubuntu-settings-firewall-tools), it will also install the latest version of docker.
+This script is based on Hetzner Community guides on [How to Keep a VPS Server Safe](https://community.hetzner.com/tutorials/security-ubuntu-settings-firewall-tools) and [Setup Ubuntu Servers](https://community.hetzner.com/tutorials/setup-ubuntu-20-04), it will also install the latest version of docker.
 
-This script is developed for Debian 12.
+This script is developed for **Debian 12** and it will not work on Ubuntu VPS.
 
 ### sysadmin user
 
